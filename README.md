@@ -35,12 +35,12 @@ To start the services manually using **Uvicorn**, follow these steps:
 
 1. Navigate to the `src` directory of the QnA agent and start the server:
    ```bash
-   cd agent/src
+   cd agent/.../src
    uvicorn question_answering_agent.main:app --reload --port 8000
    ```
 2. Open a new terminal and navigate to the `src` directory of the RAG agent:
    ```bash
-   cd rag/src
+   cd rag/.../src
    uvicorn retrieval_agent.main:app --reload --port 8001
    ```
 Ensure all required environment variables are set and the database is connected.
@@ -52,13 +52,13 @@ For containerized deployment, follow these steps:
 
 1. Build and run the **QnA agent**:
    ```bash
-   cd agent/question_answering_agent
+   cd agent/.../question_answering_agent
    docker build -t question-answering-agent:1.0 .
    docker run --env-file .env --name QnA-agent -p 8000:8000 -d question-answering-agent:1.0
    ```
 2. Build and run the **RAG agent**:
    ```bash
-   cd rag/retrieval_agent
+   cd rag/.../retrieval_agent
    docker build -t retrieval-agent:1.0 .
    docker run --env-file .env --name rag-agent -p 8001:8001 -d retrieval-agent:1.0
    ```
@@ -69,13 +69,13 @@ Ensure `.env` files contain the necessary configuration.
 ### Method 3: Running with Kubernetes (Minikube)
 For Kubernetes deployment, follow these steps:
 
-1. Install **Minikube** and start the cluster:
+1. Install **Kubectl** and **Minikube** and start the cluster:
    ```bash
    minikube start
    ```
 2. Deploy **YugaByteDB** in the Kubernetes cluster:
    ```bash
-   kubectl apply -f https://raw.githubusercontent.com/yugabyte/yugabyte-db/master/k8s/yugabyte-k8s.yaml
+  Using **HELM** or any other supported package manager for minikube cluster
    ```
 3. Deploy microservices using Kubernetes configuration files:
    ```bash
