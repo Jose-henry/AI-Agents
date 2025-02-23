@@ -30,6 +30,7 @@ Both agents are deployed with **YugaByteDB** for efficient storage and retrieval
 ---
 
 ## Deployment Methods
+**Before you start runnning, first create a virtual environment, activate it and run pip install -r requirement.txt, to install all dependencies**
 ### Method 1: Running with Uvicorn (Local Development)
 To start the services manually using **Uvicorn**, follow these steps:
 
