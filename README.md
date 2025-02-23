@@ -75,7 +75,7 @@ For Kubernetes deployment, follow these steps:
    ```
 2. Deploy **YugaByteDB** in the Kubernetes cluster:
    ```bash
-  Using **HELM** or any other supported package manager for minikube cluster
+     Using **HELM** or any other supported package manager for minikube cluster
    ```
 3. Deploy microservices using Kubernetes configuration files:
    ```bash
