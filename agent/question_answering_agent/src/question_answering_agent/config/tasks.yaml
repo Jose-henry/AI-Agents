@@ -1,0 +1,14 @@
+retrieval_task:
+  description: >
+      Delegate retrieval of Wizerly context to the RAG agent.
+  expected_output: >
+     A list of up to 5 bullet points with the most relevant information about the Wizerly application.
+  agent: converser
+
+converse_task:
+  description: >
+    Using the retrieved context, produce a detailed and comprehensive answer about the Wizerly application.
+    If the retrieved context indicates that the query is not about Wizerly, simply respond with "I don't know."
+  expected_output: >
+    A comprehensive response detailing all relevant aspects of the Wizerly application, or "I don't know" if not applicable.
+  agent: converser
