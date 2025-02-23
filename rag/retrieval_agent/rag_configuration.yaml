@@ -1,0 +1,93 @@
+# NOTE: This file is the configuration for dpeloying in K8s cluster with YugaByte DB already deployed in your cluster
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-deployment
+  labels:
+    app: rag
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rag
+  template:
+    metadata:
+      labels:
+        app: rag
+    spec:
+      containers:
+        - name: rag
+          image: retrieval-agent:1.0
+          ports:
+            - containerPort: 8001
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agents-secret
+                  key: OPENAI_API_KEY
+            - name: GROQ_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agents-secret
+                  key: GROQ_API_KEY
+            - name: YUGABYTE_DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: agents-configmap
+                  key: YUGABYTE_DB_URL
+            - name: MODEL
+              valueFrom:
+                configMapKeyRef:
+                  name: agents-configmap
+                  key: MODEL
+            - name: RAG_AGENT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: agents-configmap
+                  key: RAG_AGENT_URL
+
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-service
+spec:
+  selector:
+    app: rag
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: 8001
+
+
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: agents-secret
+type: Opaque
+data:
+  OPENAI_API_KEY: # KEY IN BASE64 
+  GROQ_API_KEY: # KEY IN BASE64
+
+# echo -n KEY | base64 this command on bash converts your keys to base 64 to store here
+
+
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agents-configmap
+data:
+  YUGABYTE_DB_URL: postgresql+psycopg://yb-tserver-service.yb-demo.svc.cluster.local:5433/yugabyte
+  RAG_AGENT_URL: "http://rag-service:8001"
+  MODEL: groq/llama-3.3-70b-versatile
+

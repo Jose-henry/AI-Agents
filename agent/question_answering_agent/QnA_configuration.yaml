@@ -1,0 +1,116 @@
+# NOTE: This file is the configuration for dpeloying in K8s cluster with YugaByte DB already deployed in your cluster
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qna-deployment
+  labels:
+    app: qna
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qna
+  template:
+    metadata:
+      labels:
+        app: qna
+    spec:
+      containers:
+        - name: qna
+          image: question-answering-agent:1.0
+          ports:
+            - containerPort: 8000
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agents-secret
+                  key: OPENAI_API_KEY
+            - name: GROQ_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agents-secret
+                  key: GROQ_API_KEY
+            - name: YUGABYTE_DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: agents-configmap
+                  key: YUGABYTE_DB_URL
+            - name: MODEL
+              valueFrom:
+                configMapKeyRef:
+                  name: agents-configmap
+                  key: MODEL
+            - name: RAG_AGENT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: agents-configmap
+                  key: RAG_AGENT_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qna-service
+spec:
+  selector:
+    app: qna
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+
+
+
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: agents-secret
+type: Opaque
+data:
+  OPENAI_API_KEY: # KEY IN BASE64 
+  GROQ_API_KEY: # KEY IN BASE64
+
+# echo -n KEY | base64 this command on bash converts your keys to base 64 to store here
+
+
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agents-configmap
+data:
+  YUGABYTE_DB_URL: postgresql+psycopg://yb-tserver-service.yb-demo.svc.cluster.local:5433/yugabyte
+  RAG_AGENT_URL: "http://rag-service:8001"
+  MODEL: groq/llama-3.3-70b-versatile
+
+
+
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: agents-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: agentjoseph.com 
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: qna-service
+            port:
+              number: 8000
+
+# Please, ensure to enable ingress addons in your local/remote cluster if not already added
+
+
