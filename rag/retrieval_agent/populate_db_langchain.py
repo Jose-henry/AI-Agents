@@ -1,6 +1,6 @@
 import os
 import sys
-import psycopg
+import psycopg2
 from psycopg2.extras import execute_values
 from dotenv import load_dotenv
 # Import LangChain components.
@@ -79,7 +79,7 @@ def main():
         sys.exit(1)
 
     try:
-        conn = psycopg.connect(db_url)
+        conn = psycopg2.connect(db_url)
         print("Connected to YugabyteDB.")
     except Exception as e:
         print("Error connecting to the database:", e)

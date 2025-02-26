@@ -5,4 +5,4 @@ retriever:
     Retrieve precise and relevant information about the Wizerly application from a vector search on the database.
   backstory: >
     You are a skilled retrieval agent focused solely on the Wizerly application. You extract information from a vectorized database populated with content from the Review Wizearly PRD. If the query does not pertain to Wizerly, reply with "I don't know."
-  llm: groq/llama-3.3-70b-versatile
+  llm: openai/gpt-4o-mini

@@ -47,6 +47,11 @@ spec:
                 configMapKeyRef:
                   name: agents-configmap
                   key: RAG_AGENT_URL
+            - name: OPENAI_MODEL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: agents-configmap
+                  key: OPENAI_MODEL_NAME
 
 
 
@@ -89,5 +94,6 @@ metadata:
 data:
   YUGABYTE_DB_URL: postgresql+psycopg://yb-tserver-service.yb-demo.svc.cluster.local:5433/yugabyte
   RAG_AGENT_URL: "http://rag-service:8001"
-  MODEL: groq/llama-3.3-70b-versatile
+  MODEL: openai/gpt-4o-mini
+  OPENAI_MODEL_NAME: gpt-4o-mini 
 

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import sys
 import warnings
-
 from datetime import datetime
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
@@ -10,12 +9,12 @@ from retrieval_agent.crew import RetrievalAgent
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 # This main file is intended to be a way for you to run your
-# crew locally, so refrain from adding unnecessary logic into this file.
-# Replace with inputs you want to test with, it will automatically
-# interpolate any tasks and agents information
+# crew locally. Replace with inputs you want to test; it will automatically
+# interpolate any tasks and agents information.
 
 app = FastAPI(title="Wizerly Retrieval Agent API")
 retrieval_crew = RetrievalAgent().crew()
+
 class TopicRequest(BaseModel):
     topic: str
 

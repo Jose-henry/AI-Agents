@@ -17,9 +17,9 @@ tool = PGSearchTool(
     table_name='documents',
     config={
         "llm": {
-            "provider": "groq",
+            "provider": "openai",
             "config": {
-                "model": "groq/llama-3.3-70b-versatile",
+                "model": "openai/gpt-4o-mini",
             },
         },
         "embedder": {
